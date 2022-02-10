@@ -1,13 +1,15 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using ClosedXML.Excel;
+using System.Linq;
 
 namespace ExtractVariableFromExcel
 {
 	class Program
 	{
+		private static readonly List<string> TargetExtensions = new() { ".xlsx", ".xlsm", ".xltx", ".xltm" };
+
 		static void Main(string[] args)
 		{
 			var files = args.ToList();
@@ -39,8 +41,10 @@ namespace ExtractVariableFromExcel
 			// Excel 検索
 			foreach (var file in files)
 			{
-				var result = new List<string>();
+				// ファイルが、Excel拡張子ではない場合はスキップ
+				if (!TargetExtensions.Contains(Path.GetExtension(file))) continue;
 
+				var result = new List<string>();
 				var book = new XLWorkbook(@$"{file}");
 
 				foreach (var sheet in book.Worksheets)
@@ -72,7 +76,6 @@ namespace ExtractVariableFromExcel
 
 					// 次のシートの結果書き込み時は、一行開ける
 					outputCurrentRow++;
-
 				}
 			}
 

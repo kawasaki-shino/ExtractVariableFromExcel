@@ -2,7 +2,7 @@
   "profiles": {
     "ExtractVariableFromExcel": {
       "commandName": "Project",
-      "commandLineArgs": "‪"
+      "commandLineArgs": ""
     }
   }
 }
