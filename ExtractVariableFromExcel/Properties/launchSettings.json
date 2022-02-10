@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ExtractVariableFromExcel": {
+      "commandName": "Project",
+      "commandLineArgs": "‪"
+    }
+  }
+}
