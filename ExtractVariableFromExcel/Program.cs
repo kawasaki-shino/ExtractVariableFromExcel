@@ -44,9 +44,10 @@ namespace ExtractVariableFromExcel
 				// ファイルが、Excel拡張子ではない場合はスキップ
 				if (!TargetExtensions.Contains(Path.GetExtension(file))) continue;
 
-				var result = new List<string>();
+				var results = new List<Result>();
 				var book = new XLWorkbook(@$"{file}");
 
+				// シートを指定
 				foreach (var sheet in book.Worksheets)
 				{
 					// 行を指定
@@ -59,7 +60,9 @@ namespace ExtractVariableFromExcel
 							var cellContent = sheet.Cell(i, j).Value.ToString();
 							if (!string.IsNullOrWhiteSpace(cellContent) && cellContent.Contains(targetStr))
 							{
-								result.Add(cellContent);
+								var result = new Result();
+								result.Value = cellContent;
+								result.Horizontal = HorizontalToStr(sheet.Cell(i, j).Style.Alignment.Horizontal);
 							}
 						}
 					}
@@ -68,9 +71,14 @@ namespace ExtractVariableFromExcel
 					outputBook.Worksheet(1).Cell(outputCurrentRow, 1).SetValue($"ファイル名：{Path.GetFileName(file)}　　シート名:{sheet.Name}");
 					outputCurrentRow++;
 
-					foreach (var str in result)
+					foreach (var result in results)
 					{
-						outputBook.Worksheet(1).Cell(outputCurrentRow, 1).SetValue(str);
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 1).SetValue(result.Value);
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 2).SetValue("ラベル");
+						if (result.Value.Contains("DATE")) outputBook.Worksheet(1).Cell(outputCurrentRow, 3).SetValue("年月日_西暦・和暦_年月日");
+						if (result.Value.Contains("SEIKYUKIKAN")) outputBook.Worksheet(1).Cell(outputCurrentRow, 3).SetValue(@"終了日が存在：年月日_西暦・和暦_年月日 ～ 年月日_西暦・和暦_年月日
+終了日が不存在：年月日_西暦・和暦_年月日");
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 4).SetValue(result.Horizontal);
 						outputCurrentRow++;
 					}
 
@@ -82,5 +90,21 @@ namespace ExtractVariableFromExcel
 			// 保存
 			outputBook.SaveAs(Path.Combine($@"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}", "Search.xlsx"));
 		}
+
+		private static string HorizontalToStr(XLAlignmentHorizontalValues arg)
+		{
+			if (arg == XLAlignmentHorizontalValues.Center) return "中央揃え";
+			if (arg == XLAlignmentHorizontalValues.Left) return "左揃え";
+			if (arg == XLAlignmentHorizontalValues.Right) return "右揃え";
+
+			return string.Empty;
+		}
+	}
+
+	class Result
+	{
+		public string Value { get; set; }
+
+		public string Horizontal { get; set; }
 	}
 }
