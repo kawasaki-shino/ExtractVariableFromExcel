@@ -76,12 +76,12 @@ namespace ExtractVariableFromExcel
 
 					foreach (var result in results)
 					{
-						outputBook.Worksheet(1).Cell(outputCurrentRow, 1).SetValue(result.Value);
-						outputBook.Worksheet(1).Cell(outputCurrentRow, 2).SetValue("ラベル");
-						if (result.Value.Contains("DATE")) outputBook.Worksheet(1).Cell(outputCurrentRow, 3).SetValue("年月日_西暦・和暦_年月日");
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 1).SetValue(result.Value).Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center); ;
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 2).SetValue("ラベル").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center);
+						if (result.Value.Contains("DATE")) outputBook.Worksheet(1).Cell(outputCurrentRow, 3).SetValue("年月日_西暦・和暦_年月日").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center); ;
 						if (result.Value.Contains("SEIKYUKIKAN")) outputBook.Worksheet(1).Cell(outputCurrentRow, 3).SetValue(@"終了日が存在：年月日_西暦・和暦_年月日 ～ 年月日_西暦・和暦_年月日
-終了日が不存在：年月日_西暦・和暦_年月日");
-						outputBook.Worksheet(1).Cell(outputCurrentRow, 4).SetValue(result.Horizontal);
+終了日が不存在：年月日_西暦・和暦_年月日").Style.Alignment.SetVertical(XLAlignmentVerticalValues.Top);
+						outputBook.Worksheet(1).Cell(outputCurrentRow, 4).SetValue(result.Horizontal).Style.Alignment.SetVertical(XLAlignmentVerticalValues.Center); ;
 						outputCurrentRow++;
 					}
 
@@ -100,7 +100,7 @@ namespace ExtractVariableFromExcel
 			if (arg == XLAlignmentHorizontalValues.Left) return "左揃え";
 			if (arg == XLAlignmentHorizontalValues.Right) return "右揃え";
 
-			return string.Empty;
+			return "左揃え";
 		}
 	}
 
