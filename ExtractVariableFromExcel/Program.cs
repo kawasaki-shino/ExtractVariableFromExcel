@@ -60,9 +60,12 @@ namespace ExtractVariableFromExcel
 							var cellContent = sheet.Cell(i, j).Value.ToString();
 							if (!string.IsNullOrWhiteSpace(cellContent) && cellContent.Contains(targetStr))
 							{
-								var result = new Result();
-								result.Value = cellContent;
-								result.Horizontal = HorizontalToStr(sheet.Cell(i, j).Style.Alignment.Horizontal);
+								var result = new Result
+								{
+									Value = cellContent,
+									Horizontal = HorizontalToStr(sheet.Cell(i, j).Style.Alignment.Horizontal)
+								};
+								results.Add(result);
 							}
 						}
 					}
