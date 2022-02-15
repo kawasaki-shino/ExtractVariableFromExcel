@@ -44,12 +44,14 @@ namespace ExtractVariableFromExcel
 				// ファイルが、Excel拡張子ではない場合はスキップ
 				if (!TargetExtensions.Contains(Path.GetExtension(file))) continue;
 
-				var results = new List<Result>();
+				// Excel開く
 				var book = new XLWorkbook(@$"{file}");
 
 				// シートを指定
 				foreach (var sheet in book.Worksheets)
 				{
+					var results = new List<Result>();
+
 					// 行を指定
 					for (var i = 1; i <= sheet.LastRowUsed().RowNumber(); i++)
 					{
