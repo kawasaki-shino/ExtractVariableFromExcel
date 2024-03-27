@@ -1,3 +1,6 @@
+W 案件用ツール  
+[Wiki](https://nanairoware.nanairo-inc.jp/member/tasks/wiki/project/FE-%E3%83%AF%E3%82%A4%E3%82%BA210101?id=237)
+
 # 概要
 * ExtractVariableFromExcel は、`Excel`と 検索文字列を入力すると、検索文字列が使用されているセルの値を抽出してくれるツールです。
 
